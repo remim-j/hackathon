@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <style type="text/css">
+		
+        #svg1 {
+            height: 75px;
+        }
+		
+		div.tooltip {
+			position: absolute;
+			text-align: center;
+			color: black;
+			width: 275px;
+			height: 37px;
+			padding: 2px;
+			font: 12px sans-serif;
+			background: grey;
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
+		</style>
+	</head>
+	
+	<body>
+	
+		<div id="map"></div>
+		
+	</body>
+		
+		<script>
+
+			var width = 600, height = 600; // Lux : -950 ; 2250 Fra : 550 ; 550
+
+			// Create a path object to manipulate geo data
+			var path = d3.geoPath();
+
+			// Define projection property
+			var projection = d3.geoConicConformal() // Lambert-93
+				.center([2.454071, 46.279229]) // Center on France
+				.scale(35000) // Lux : 35000 Fra : 2600
+				.translate([-1200, 2600]);
+
+			path.projection(projection); // Assign projection to path object
+
+			// Create the DIV that will contain our map
+			var svg = d3.select('#map').append("svg")
+				.attr("id", "svg")
+				.attr("width", width)
+				.attr("height", height)
+				.attr("viewBox", "0 0 " + width + " " + height)
+				.attr("preserveAspectRatio", "xMinYMid");
+
+			// Append the group that will contain our paths
+			var deps = svg.append("g");
+				
+			// Load GeoJSON data and run a function for each entry
+			d3.json('departmentsLux.json', function(req, geojson) {
+
+				// Bind the entry to a SVG path
+				deps.selectAll("path")
+					.data(geojson.features)
+					.enter()
+					.append("path")
+					.attr('class', 'department')
+					.attr("d", path)
+					.on("mouseover", function(d) {
+						div.transition()
+							.duration(200)
+							.style("opacity", .9);
+						div.html("Commune : " + d.properties.name)
+							.style("left", (d3.event.pageX + 30) + "px")
+							.style("top", (d3.event.pageY - 30) + "px")
+					})
+					.on("mouseout", function(d) {
+						div.transition()
+							.duration(500)
+							.style("opacity", 0);
+						div.html("")
+							.style("left", "0px")
+							.style("top", "0px");
+					});
+			});
+			
+			// Append a DIV for the tooltip
+			var div = d3.select("body").append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
+		</script>
+</html>
