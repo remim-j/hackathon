@@ -1,5 +1,4 @@
 <?php
- session_start();
 	$db = mysqli_connect('localhost','root','','analyse')
 			or die('Error connecting to MySQL server.');
 			
@@ -35,7 +34,7 @@
 	
 	$resultsJSON = json_encode($rows);
 	
-	$_SESSION['JSON'] = $resultsJSON;
+	echo $resultsJSON;
 	
 	/*Les lignes ci-dessous sont pertinentes si count($reponse) > 10, environ */
 	$norme_min = $rows[intval((2.5/100)*sizeOf($rows))];// Retourne la valeur à 2.5%

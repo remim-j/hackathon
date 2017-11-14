@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php session_start(); ?>
+
 	<head>
 	
 		<!-- Encodage -->
@@ -103,8 +103,6 @@
 						url: 'ajax_donnees.php',
 						success: function(data) {
 							$("#resultatsPHP").html(data);
-var json = <?php echo $JSON; ?>
-					alert(json);
 						}
 					});
 					
