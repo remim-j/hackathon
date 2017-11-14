@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<?php session_start(); ?>
 	<head>
 	
 		<!-- Encodage -->
@@ -103,10 +103,12 @@
 						url: 'ajax_donnees.php',
 						success: function(data) {
 							$("#resultatsPHP").html(data);
-
-					}
-            });
-		   });
+var json = <?php echo $JSON; ?>
+					alert(json);
+						}
+					});
+					
+			});
 		});
 		</script>
 		
@@ -206,7 +208,9 @@
 				.attr("class", "tooltip")               
 				.style("opacity", 0);
 				
-			d3.json("data.json", draw);
+			
+				
+			d3.json("data.json", draw); // "data.json"
 				
 			function draw(dataset){
 				//Largeur et hauteur du graphe
