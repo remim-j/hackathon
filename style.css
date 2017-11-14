@@ -3,35 +3,37 @@
 }
 		
 div.tooltip {
-		position: absolute;
-		opacity:0.8;
-		z-index:1000;
-		text-align:left;
-		border-radius:4px;
-		-moz-border-radius:4px;
-		-webkit-border-radius:4px;
-		padding:8px;
-		color:#fff;
-		background-color:#000;
-		font: 12px sans-serif;
-		max-width: 300px;
-		height: 60px;
+	position: absolute;
+	opacity:0.8;
+	z-index:1000;
+	text-align:left;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	padding:8px;
+	color:#fff;
+	background-color:#000;
+	font: 12px sans-serif;
+	max-width: 300px;
+	height: 60px;
 }
 
-#boards
-{
+#boards {
 	width :  100%;
     display : flex;
     align-items: center;
-	justify-content: space-around;
+	justify-content : space-around;
 }
 
-.filtresHBD
-{
+.filtresHBD {
 	width :  100%;
     display : flex;
 	flex-direction : column;
     align-items: left;
+}
+
+ rect:hover {
+	 fill: orange;
 }
 
 .YlGn .q0-3{fill:rgb(247,252,185)}

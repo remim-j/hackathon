@@ -90,9 +90,25 @@
 		
 		<p>Affichage résultats php
 		
-		<button id="buttonPHP">Click Me</button>
+		<button type="button">Click Me</button>
 		
-		<div id="printPHP"></div>
+		<div id="resultatsPHP"></div>
+		
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("button").click(function(){
+				
+					$.ajax({
+						type: 'POST',
+						url: 'ajax_donnees.php',
+						success: function(data) {
+							$("#resultatsPHP").html(data);
+
+					}
+            });
+		   });
+		});
+		</script>
 		
 		</p>
 		
@@ -244,21 +260,6 @@
 					.attr("font-size", "11px")
 					.attr("fill", "white");
 			}
-			
-			$(document).ready(function(){
-					$("#buttonPHP").click(function(){
-
-						$.ajax({
-							type: 'POST',
-							url: '/test.php',
-							success: function(data) {
-								alert(data);
-								$("#printPHP").text(data);
-
-							}
-						});
-			   });
-			});
 				
 			var app = angular.module("app", ['ngMaterial']);
 			
