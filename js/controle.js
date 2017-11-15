@@ -1,15 +1,30 @@
 $(document).ready(function(){
-  $('#result').click(function(){
-    $.ajax({
+    $('#result').click(function(e){
+	e.preventDefault();
+	var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
+	var age_min = document.getElementById("age_min").value;
+	var age_max = document.getElementById("age_max").value;
+	var ville = document.getElementById("ville").innerHTML;
+	if(age_min !== "" && age_max !== "" && parseFloat(age_max) <= parseFloat(age_min))
+	{
+		document.getElementById("test_age").innerHTML = "Erreur age";
+		return;
+	}
+	var sexe = document.getElementById("h").checked ? 1 : (document.getElementById("f").checked ? 2 : null);
+	$.ajax({
       type: 'POST',
       url: 'ajax_donnees.php',
+	  data:{
+		  ville:ville,
+		  type:type,
+		  age_min:age_min,
+		  age_max:age_max,
+		  sexe:sexe
+	  },
       success: function(data) {
         $("#resultatsPHP").html(data);
       }
     });
-  });
-  $('input:text').change(function(){
-
   });
   $('#uploadAndImport').submit(function(e){
 		e.preventDefault();

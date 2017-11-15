@@ -12,8 +12,10 @@ if ($mysqli->connect_errno) {
   printf("Échec de la connexion : %s\n", $mysqli->connect_error);
   exit();
 }
+$d1 = date_create('now');
 $mysqli->query("DELETE FROM personne");
 $mysqli->query("DELETE FROM type_an");
+$mysqli->query("DELETE FROM analyse");
 
 $handle = fopen($targetPath,"r");
 fgetcsv($handle, 1000, ";");
@@ -80,7 +82,7 @@ while ($data = fgetcsv($handle,1000,";"))
       {
         echo $mysqli->error;
       }
-      $id_personne = $mysqli->insert_id;
+      $id_type = $mysqli->insert_id;
     }
     $result->close();
 
@@ -88,9 +90,14 @@ while ($data = fgetcsv($handle,1000,";"))
     $valeur = $data[7] * pow(10,$data[8]);
     $unite = (sizeof(explode(' ', $data[5])) > 1 ? addslashes(explode(' ', $data[5])[sizeof(explode(' ', $data[5]))-1]) : NULL);
     $date = $datetime1->format("Y-m-d");
-    $stmt_insert_analyse->execute();
+    if(!$stmt_insert_analyse->execute())
+	{
+        echo $mysqli->error;
+	}
   }
 }
-echo "Succès";
+$d2 = date_create('now');
+echo $d2->diff($d1)->format('%H:%i:%s');
+//echo "Succès";
 $mysqli->close();
 ?>

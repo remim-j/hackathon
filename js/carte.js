@@ -69,6 +69,9 @@
 									.style("left", (d3.event.pageX + 30) + "px")
 									.style("top", (d3.event.pageY - 30) + "px");
 							})
+							.on("click", function(d) {
+								d3.select("#ville").html(e.Communes);
+							})
 							.on("mouseout", function(d) {
 								div.transition()
 									.duration(500)

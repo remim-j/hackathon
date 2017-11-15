@@ -68,12 +68,15 @@
 		</div>
 
 		<p>
-			<div id="boards">
+						<div id="boards">
 
 				<div ng-controller="MainCtrl" style='flex: 0 0 270px;'>
 					<div class="container form-group col-md-7">
 						<div style='margin-down: 10px;'>Define your filters :</div>
-						<select name="analyse_type>
+						<label>Ville selectionnée :</label>
+						<label id="ville"></label>
+						<select id="analyse_type">
+						<option value= "default">Chosir un type d'analyse...</option>
 <?php
 $db = mysqli_connect('localhost','root','','analyse')
 		or die('Error connecting to MySQL server.');
@@ -83,10 +86,11 @@ while ($data = $reponse->fetch_assoc())
   ?>
   <option value="<?php echo $data['type']; ?>"><?php echo $data['type']; ?></option>
 <?php }?></select>
-						<input type="checkbox"/> Male
-						<input type="checkbox"/> Female
-						<input ng-model="age_min" type="text" placeholder="Age Min"/>
-						<input ng-model="age_max" type="text" placeholder="Age Max"/>
+						<input type="checkbox" id="h"/> Homme
+						<input type="checkbox" id="f"/> Femme
+						<input ng-model="age_min" id="age_min" class="age" type="text" placeholder="Age Min"/>
+						<input ng-model="age_max" id="age_max" class="age" type="text" placeholder="Age Max"/>
+						<label id="test_age"></label>
 						<h1>Import</h1>
 						<form id="uploadAndImport" method="post" enctype="multipart/form-data">
 						<input type="file" name="file" id="file" required />
