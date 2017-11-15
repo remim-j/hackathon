@@ -21,10 +21,36 @@ $(document).ready(function(){
 		  age_max:age_max,
 		  sexe:sexe
 	  },
-      success: function(data) {
-        $("#resultatsPHP").html(data);
-      }
+	  dataType : 'json',
+	  success: function(response){
+			console.log("OK");
+			$("#resultatsPHP").html("Json obtenu : " + response.dataJson + "<br><br>" 
+			+ "Norme min : " + response.normeMin + "<br><br>" + "Norme max : " + response.normeMax
+			+ "<br><br>" + "Nombres de rows : " + response.nbRows);
+			var tableau = JSON.parse(response.dataJson);
+			dataJson = tableau;
+			
+			console.log(dataJson);
+			
+			var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			theme: "light2",
+			title:{
+				text: "Simple Line Chart"
+			},
+			axisY:{
+				includeZero: false
+			},
+			data: [{        
+				type: "line",       
+				dataPoints: dataJson
+			}]
+		});
+		chart.render();
+
+		}
     });
+	
   });
   $('#uploadAndImport').submit(function(e){
 		e.preventDefault();

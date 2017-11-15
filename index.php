@@ -6,6 +6,8 @@
 
 		<!-- jQuery -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
 		<!-- Librairie D3.js -->
         <script src="https://d3js.org/d3.v4.js"></script>
@@ -101,8 +103,8 @@ while ($data = $reponse->fetch_assoc())
 				</div>
 
 				<div id="map"></div>
-
-				<div id="resultHBD"></div>
+				
+				<div id="chartContainer" style="height: 370px; width: 100%;"></div>
 			</div>
 		</p>
 
