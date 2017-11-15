@@ -1,45 +1,45 @@
 <?php
 	$db = mysqli_connect('localhost','root','','analyse')
 			or die('Error connecting to MySQL server.');
-			
+
 	$ville = 'LUXEMBOURG';
 	$ageMin = 20;
 	$ageMax = 20;
 	$sexe = 2;
 	$analyseId = 42;
-		
+
 	echo 'Bonjour <br>';
 
-	// $personne = query('select valeur, age, sexe, ville from analyse, personne where id_analyse = '$id_analyse' and ref_personne = id_personne'); // On récupère les informations sur la personne à partir des l'id de l'analyse
-	$reponse = mysqli_query($db, "select valeur from analyse, personne, type_an where ville = '$ville' and age >= $ageMin and age <= $ageMax and sexe = $sexe and ref_type = $analyseId"); /*On recupere toutes les valeurs e toutes les personnes qui correspondent aux données demandées. Il faut modifier la requête en fonction des données manquantes.*/
-	
+	// $personne = query('select valeur, age, sexe, ville from analyse, personne where id_analyse = '$id_analyse' and ref_personne = id_personne'); // On rï¿½cupï¿½re les informations sur la personne ï¿½ partir des l'id de l'analyse
+	$reponse = mysqli_query($db, "select valeur from analyse, personne, type_an where ville = '$ville' and age >= $ageMin and age <= $ageMax and sexe = $sexe and ref_type = $analyseId"); /*On recupere toutes les valeurs e toutes les personnes qui correspondent aux donnï¿½es demandï¿½es. Il faut modifier la requï¿½te en fonction des donnï¿½es manquantes.*/
+
 	$rows = array();
 	while($row = mysqli_fetch_assoc($reponse))
 	{
 		array_push($rows, intval(implode($row)));
 		echo 'Row : ' . intval(implode($row)) . ' ';
 	}
-	
+
 	echo '<br><br>';
-	
+
 	print_r($rows);
 
-	asort($rows); /* Trie réponse */
-	
+	asort($rows); /* Trie rï¿½ponse */
+
 	echo '<br><br>';
-	
+
 	print_r($rows);
-	
+
 	echo '<br><br>';
-	
+
 	$resultsJSON = json_encode($rows);
-	
-	echo $resultsJSON;
-	
+
+	$_SESSION['JSON'] = $resultsJSON;
+
 	/*Les lignes ci-dessous sont pertinentes si count($reponse) > 10, environ */
-	$norme_min = $rows[intval((2.5/100)*sizeOf($rows))];// Retourne la valeur à 2.5%
-	$norme_max = $rows[intval((97.5/100)*sizeOf($rows))];// Retourne la valuer à 97.5%
-	/* if (count($rows) >= 10){ Si on a suffisamment de résultats sur la ville */
+	$norme_min = $rows[intval((2.5/100)*sizeOf($rows))];// Retourne la valeur ï¿½ 2.5%
+	$norme_max = $rows[intval((97.5/100)*sizeOf($rows))];// Retourne la valuer ï¿½ 97.5%
+	/* if (count($rows) >= 10){ Si on a suffisamment de rï¿½sultats sur la ville */
 
 	echo '<br><br>Resultats d\'analyse issus de la commune de : LUXEMBOURG <br>'
 	. 'Le norme pour de tels resutats d\'analyse dans la commune est comprise entre ' . $norme_min . ' et ' . $norme_max . '<br>'
@@ -47,6 +47,6 @@
 
 	/* } */
 
-	$reponse->close(); /*Termine le traitement de la requête*/
+	$reponse->close(); /*Termine le traitement de la requï¿½te*/
 
 ?>

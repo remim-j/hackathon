@@ -1,43 +1,74 @@
 <!DOCTYPE html>
+<?php
+function tep_select ($name, $options=array(), $value=NULL, $paramfoo=NULL) {
+global $_GET, $_POST;
+$paramfoo = ((!empty($paramfoo)) ? ' '.$paramfoo : '');
+echo '<input type="select" name="'.$name.'" ng-model="'.$name.'" ' .$paramfoo. '>';
+if (isset($_GET[$name]))
+	$value = $_GET[$name];
+elseif (isset($_POST[$name]))
+$value = $_POST[$name];
+elseif (empty($value))  $value = '';
+if (array_key_exists($value,$options))
+$value = $options[$value];
+$strfound = false;
+foreach ($options as $opt => $str) {
+	if ($str==$value && !$strfound) {
+		$selectedfoo = ' selected';
+		$strfound = true;
+	}
+	else
+	 $selectedfoo = '';
+	 echo '<option value="'.$opt.'"' .$selectedfoo. '>'.$str.'</option>';
+ }
+ if (!empty($value) && !$strfound)
+ echo '<option value="'.$value.'" selected>'.$value.'</option>';
+ echo '</select>';
+}
 
+$db = mysqli_connect('localhost','root','','analyse')
+		or die('Error connecting to MySQL server.');
+		$reponse = mysqli_query($db, "SELECT DISTINCT type FROM type_an");
+		$array = $reponse->fetch_all();
+?>
 	<head>
-	
+
 		<!-- Encodage -->
 		<meta charset="UTF-8">
-		
+
 		<!-- jQuery -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		
+
 		<!-- Librairie D3.js -->
         <script src="https://d3js.org/d3.v4.js"></script>
-		
+
 		<!-- Feuille de style -->
 		<link rel="stylesheet" type="text/css" href="style.css">
-		
+
 		<!-- Bootstrap -->
 		<link data-require="bootstrap-css@3.0.0-rc2" data-semver="3.0.0-rc2" rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css" />
-		
+
 		<!-- AngularJS -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-		
+
 		<!-- Dates en français -->
 		<script src="angular-locale_fr-fr.js"></script>
-		
+
 		<!-- Angular-material -->
 		<script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
-		
+
 		<!-- Titre -->
 		<title>Hackaton Big Data</title>
 	</head>
-	
+
 	<body ng-app="app">
-	
+
 		<h1>Laboratoire Luxembourgeois d'analyses médicales Ketterthill - LLAM S.A.</h1>
 		<h2>Outil de calcul de la norme des analyses numériques</h2>
-		
+
 		<div class="col-lg-10">
 			<form>
 				<fieldset>
@@ -67,206 +98,37 @@
 				</fieldset>
 			</form>
 		</div>
-	
+
 		<p>
 			<div id="boards">
-				
+
 				<div ng-controller="MainCtrl" style='flex: 0 0 270px;'>
 					<div class="container form-group col-md-7">
 						<div style='margin-down: 10px;'>Define your filters :</div>
-						<input ng-model="analysis_type" type="text" placeholder="Analysis type">
+						<!--<?php tep_select('analysis_type', $array,NULL, NULL); ?>-->
+						<input ng-model="analysis_type" type="select" placeholder="Analysis type"/>
 						<input type="checkbox"/> Male
 						<input type="checkbox"/> Female
-						<input ng-model="age_min" type="text" placeholder="Age Min">
-						<input ng-model="age_max" type="text" placeholder="Age Max">
+						<input ng-model="age_min" type="text" placeholder="Age Min"/>
+						<input ng-model="age_max" type="text" placeholder="Age Max"/>
 					</div>
 				</div>
-				
+
 				<div id="map"></div>
-				
+
 				<div id="resultHBD"></div>
 			</div>
 		</p>
-		
+
 		<p>Affichage résultats php
-		
-		<button type="button">Click Me</button>
-		
+
+		<button type="button" id="result">Click Me</button>
+
 		<div id="resultatsPHP"></div>
-		
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$("button").click(function(){
-				
-					$.ajax({
-						type: 'POST',
-						url: 'ajax_donnees.php',
-						success: function(data) {
-							$("#resultatsPHP").html(data);
-						}
-					});
-					
-			});
-		});
-		</script>
-		
+
 		</p>
-		
+
 	</body>
-		
-		<script>
-
-			var width = 430, height = 550;
-
-			var path = d3.geoPath();
-
-			var projection = d3.geoConicConformal()
-				.center([2.72, 46.33])
-				.scale(35000) // Lux : 35000 Fra : 2600
-				.translate([-1200, 2600]); // Lux : -1200, 2600 ; Fra : 300, 300
-
-			path.projection(projection);
-
-			var svg = d3.select('#map').append("svg")
-				.attr("id", "svg")
-				.attr("width", width)
-				.attr("height", height)
-				.attr("viewBox", "0 0 " + width + " " + height)
-				.attr("preserveAspectRatio", "xMinYMid")
-				.attr("class", "YlOrRd");
-
-			var deps = svg.append("g");
-			
-			d3.json("departmentsLux.json", function(req, geojson) {
-				var features = deps
-					.selectAll("path")
-					.data(geojson.features)
-					.enter()
-					.append("path")
-					.attr('id', function(d) {return "d" + d.properties.cartodb_id;})
-					.attr("d", path);
-
-				d3.csv("populationLux.csv", function(csv) {
-					// Quantile scales map an input domain to a discrete range, 0...max(population) to 1...9
-					var quantile = d3.scaleQuantile()
-						.domain([0, d3.max(csv, function(e) { return +e.Echelle; })])
-						.range(d3.range(9));
-
-					var legend = svg.append('g')
-						.attr('transform', 'translate(375, 150)')
-						.attr('id', 'legend');
-					
-					legend.selectAll('.colorbar')
-						.data(d3.range(9))
-					  .enter().append('svg:rect')
-						.attr('y', function(d) { return d * 20 + 'px'; })
-						.attr('height', '20px')
-						.attr('width', '20px')
-						.attr('x', '0px')
-						.attr("class", function(d) { return "q" + d + "-9"; });
-						
-					var legendScale = d3.scaleLinear()
-						.domain([0, d3.max(csv, function(e) { return +e.Echelle; })])
-						.range([0, 9 * 20]);
-					
-					var legendAxis = svg.append("g")
-						.attr('transform', 'translate(400, 150)')
-						.call(d3.axisRight(legendScale).ticks(6));
-					
-					csv.forEach(function(e,i) {
-						d3.select("#d" + e.Cartodb_id)
-							.attr("class", function(d) { return "department q" + quantile(+e.Echelle) + "-9"; })
-							.on("mouseover", function(d) {
-								div.transition()        
-									.duration(200)      
-									.style("opacity", .9);
-								div.html("<b>Commune : </b>" + e.Communes + "<br>"
-										+ "<b>Canton : </b>" + e.Cantons + "<br>"
-										+ "<b>Population : </b>" + e.Population + "<br>")
-									.style("left", (d3.event.pageX + 30) + "px")     
-									.style("top", (d3.event.pageY - 30) + "px");
-							})
-							.on("mouseout", function(d) {
-								div.transition()
-									.duration(500)
-									.style("opacity", 0);
-								div.html("")
-									.style("left", "0px")
-									.style("top", "0px");
-							});
-					});
-				});
-			});
-			
-			d3.select("select").on("change", function() {
-				d3.selectAll("svg").attr("class", this.value);
-			});
-			
-			var div = d3.select("body").append("div")   
-				.attr("class", "tooltip")               
-				.style("opacity", 0);
-				
-			
-				
-			d3.json("data.json", draw); // "data.json"
-				
-			function draw(dataset){
-				//Largeur et hauteur du graphe
-				var larg =500;
-				var haut =100;
-				var barPadding =2;//Padding des barres
-				var nbb = dataset.length;//Nb de barres
-				var lb =((larg - nbb) / nbb);//Largeur barre
-				var ch =(haut / d3.max(dataset, function(d){
-													return d.valeur //Coef. hauteur.
-												}));
-	   
-				//Creation élément SVG
-				var svg = d3.select('#resultHBD')
-					.append("svg")
-					.attr("width", larg)
-					.attr("height", haut);
-				 
-				svg.selectAll("rect")
-					.data(dataset)
-					.enter()
-					.append("rect")
-					.attr("x", function(d, i){
-						return(i * lb);
-					})
-				   .attr("y", function(d){
-						return haut -(d.valeur * ch);
-					})
-					.attr("width", lb - barPadding)
-					.attr("height", function(d){
-						return(d.valeur * ch);
-					})
-					.attr("fill", function(d){
-						return"rgb(0, 0, "+(d.valeur *10)+")";
-					});
-	   
-				svg.selectAll("text")
-					.data(dataset)
-					.enter()
-					.append("text")
-					.text(function(d){
-					   return d.valeur;
-					})
-					.attr("x", function(d, i){
-						return(i * lb)+ 12;
-					})
-					.attr("y", function(d){
-						return haut -((d.valeur * ch)-12);
-					})
-					.attr("font-family", "sans-serif")
-					.attr("font-size", "11px")
-					.attr("fill", "white");
-			}
-				
-			var app = angular.module("app", ['ngMaterial']);
-			
-			app.controller("MainCtrl", function($scope){
-			});
-
-		</script>
+		<script type="text/javascript" src="js/carte.js"></script>
+			<script type="text/javascript" src="js/controle.js"></script>
 </html>
