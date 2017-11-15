@@ -1,24 +1,41 @@
-var dataJson;
-
 $(document).ready(function(){
   $('#result').click(function(){
-	 
-	 $.ajax({
-	   type: "POST",
-	   url: "ajax_donnees.php",
-	   dataType : 'json',
-	   success: function(response){
-			$("#resultatsPHP").html("Json obtenu : " + response.dataJson + "<br><br>" 
-			+ "Norme min : " + response.normeMin + "<br><br>" + "Norme max : " + response.normeMax
-			+ "<br><br>" + "Nombres de rows : " + response.nbRows);
-			var tableau = JSON.parse(response.dataJson);
-			dataJson = tableau;
-			console.log(dataJson);
-	   }
-	});
-	 
+    $.ajax({
+      type: 'POST',
+      url: 'ajax_donnees.php',
+      success: function(data) {
+        $("#resultatsPHP").html(data);
+      }
+    });
   });
   $('input:text').change(function(){
 
   });
+  $('#uploadAndImport').submit(function(e){
+		e.preventDefault();
+		display_loader();
+		$.ajax({
+			url: "import.php",
+			type: "POST",
+			data: new FormData(this),
+			contentType: false,
+			cache: false, 
+			processData: false,
+			success: function(data) {
+				remove_loader(data);
+			}
+		});
+	});
 });
+function display_loader()
+{
+	document.getElementById('sub').value = "Import en cours...";
+	document.getElementById('sub').setAttribute("disabled", "disabled");
+	document.getElementById('loader').innerHTML = '<div style="width:100%;height:0;padding-bottom:100%;position:relative;"><img src="img/loader.gif" width="100%" height="100%" style="position:absolute" frameBorder="0"></img></div>';
+}
+function remove_loader(data)
+{
+	document.getElementById('sub').value = "Importer";
+	document.getElementById('sub').removeAttribute("disabled");
+	document.getElementById('loader').innerHTML = data;
+}

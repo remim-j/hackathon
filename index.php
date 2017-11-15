@@ -1,36 +1,4 @@
 <!DOCTYPE html>
-<?php
-function tep_select ($name, $options=array(), $value=NULL, $paramfoo=NULL) {
-global $_GET, $_POST;
-$paramfoo = ((!empty($paramfoo)) ? ' '.$paramfoo : '');
-echo '<input type="select" name="'.$name.'" ng-model="'.$name.'" ' .$paramfoo. '>';
-if (isset($_GET[$name]))
-	$value = $_GET[$name];
-elseif (isset($_POST[$name]))
-$value = $_POST[$name];
-elseif (empty($value))  $value = '';
-if (array_key_exists($value,$options))
-$value = $options[$value];
-$strfound = false;
-foreach ($options as $opt => $str) {
-	if ($str==$value && !$strfound) {
-		$selectedfoo = ' selected';
-		$strfound = true;
-	}
-	else
-	 $selectedfoo = '';
-	 echo '<option value="'.$opt.'"' .$selectedfoo. '>'.$str.'</option>';
- }
- if (!empty($value) && !$strfound)
- echo '<option value="'.$value.'" selected>'.$value.'</option>';
- echo '</select>';
-}
-
-$db = mysqli_connect('localhost','root','','analyse')
-		or die('Error connecting to MySQL server.');
-		$reponse = mysqli_query($db, "SELECT DISTINCT type FROM type_an");
-		$array = $reponse->fetch_all();
-?>
 	<head>
 
 		<!-- Encodage -->
@@ -105,12 +73,26 @@ $db = mysqli_connect('localhost','root','','analyse')
 				<div ng-controller="MainCtrl" style='flex: 0 0 270px;'>
 					<div class="container form-group col-md-7">
 						<div style='margin-down: 10px;'>Define your filters :</div>
-						<!--<?php tep_select('analysis_type', $array,NULL, NULL); ?>-->
-						<input ng-model="analysis_type" type="select" placeholder="Analysis type"/>
+						<select name="analyse_type>
+<?php
+$db = mysqli_connect('localhost','root','','analyse')
+		or die('Error connecting to MySQL server.');
+		$reponse = mysqli_query($db, "SELECT DISTINCT type FROM type_an ORDER BY type");
+while ($data = $reponse->fetch_assoc())
+{
+  ?>
+  <option value="<?php echo $data['type']; ?>"><?php echo $data['type']; ?></option>
+<?php }?></select>
 						<input type="checkbox"/> Male
 						<input type="checkbox"/> Female
 						<input ng-model="age_min" type="text" placeholder="Age Min"/>
 						<input ng-model="age_max" type="text" placeholder="Age Max"/>
+						<h1>Import</h1>
+						<form id="uploadAndImport" method="post" enctype="multipart/form-data">
+						<input type="file" name="file" id="file" required />
+						<input id="sub" type="submit" value="Importer" class="submit" />
+						</form>
+					<div id="loader"></div>
 					</div>
 				</div>
 
