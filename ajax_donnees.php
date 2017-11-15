@@ -12,7 +12,7 @@
 	
 	$query = 'select valeur from analyse, personne, type_an where ';
 	$c = 0;
-	// $personne = query('select valeur, age, sexe, ville from analyse, personne where id_analyse = '$id_analyse' and ref_personne = id_personne'); // On r�cup�re les informations sur la personne � partir des l'id de l'analyse
+	// On écrit la requête suivant les données qui sont disponibles
 	if(isset($ville)){
 		$query .= 'ville = '.$ville.' ';
 		$c = 1;
@@ -22,7 +22,7 @@
 			$query .= 'and ';
 			$c = 0;
 		}
-		$query .= ' age >= $ageMin ';
+		$query .= 'age >= $ageMin ';
 		$c = 1;
 	}
 	if(isset($ageMax))'={
@@ -30,7 +30,7 @@
 			$query .= 'and ';
 			$c = 0;
 		}
-		$query .= ' age >= '.$ageMax.' ';
+		$query .= 'age >= '.$ageMax.' ';
 		$c = 1;
 	}
 	if(isset($sexe))'={
@@ -38,7 +38,7 @@
 			$query .= 'and ';
 			$c = 0;
 		}
-		$query .= ' sexe = '.$sexe.' ';
+		$query .= 'sexe = '.$sexe.' ';
 		$c = 1;
 	}
 	if(isset($analyseId))'={
@@ -46,8 +46,7 @@
 			$query .= 'and ';
 			$c = 0;
 		}
-		$query .= ' ref_type = '.$analyseId.' ';
-		$c = 1;
+		$query .= 'ref_type = '.$analyseId;
 	}
 	$reponse = mysqli_query($db, $query); /*On recupere toutes les valeurs e toutes les personnes qui correspondent aux donn�es demand�es. Il faut modifier la requ�te en fonction des donn�es manquantes.*/
 
