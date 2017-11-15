@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	$db = mysqli_connect('localhost','root','','analyse')
 			or die('Error connecting to MySQL server.');
 
@@ -15,10 +15,10 @@
 		$query .= " and ville = '$ville' ";
 	}
 	if(!empty($ageMin)){
-		$query .= "and age >= ".$ageMin. " ";
+		$query .= " and age >= ".$ageMin. " ";
 	}
 	if(!empty($ageMax)){
-		$query .= "and age <= ".$ageMax." ";
+		$query .= " and age <= ".$ageMax." ";
 	}
 	if(!empty($sexe)){
 		$query .= " and sexe = ".$sexe." ";
@@ -34,6 +34,22 @@
 	while($row = mysqli_fetch_assoc($reponse))
 	{
 		array_push($rows, intval(implode($row)));
+	}
+	
+	if (sizeOf($rows) <= 10 and !empty($ville)) {	// On verifie qu'on a assez de resultats pour effectuer un mesure pertinente
+		$queryCom = "select Commune from ville_to_commune where nom = '$ville'";
+		$reponseCom = mysqli_query($db, $queryCom);
+		$commune = implode(mysqli_fetch_assoc($reponseCom));
+		$query = preg_replace("#ville = [^ ]+#","(ville in (select ville from ville_to_commune where commune = '$commune'))",$query); // On remplace la ville par la commune
+		echo $query;
+		$reponse = mysqli_query($db, $query); 
+
+		$rows = array();
+		while($row = mysqli_fetch_assoc($reponse))
+		{
+		array_push($rows, intval(implode($row)));
+		}
+
 	}
 
 	sort($rows); /* Trie r�ponse */
