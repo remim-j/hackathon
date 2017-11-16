@@ -4,7 +4,6 @@ $(document).ready(function(){
 	var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
 	var age_min = document.getElementById("age_min").value;
 	var age_max = document.getElementById("age_max").value;
-	var ville = document.getElementById("ville").innerHTML;
 	if(age_min !== "" && age_max !== "" && parseFloat(age_max) <= parseFloat(age_min))
 	{
 		document.getElementById("test_age").innerHTML = "Erreur age";
@@ -15,39 +14,16 @@ $(document).ready(function(){
       type: 'POST',
       url: 'ajax_donnees.php',
 	  data:{
-		  ville:ville,
 		  type:type,
 		  age_min:age_min,
 		  age_max:age_max,
-		  sexe:sexe
+		  sexe:sexe,
+		  group:"ok"
 	  },
-	  dataType : 'json',
+	  //dataType : 'json',
 	  success: function(response){
-			console.log("OK");
-			$("#resultatsPHP").html("Json obtenu : " + response.dataJson + "<br><br>" 
-			+ "Norme min : " + response.normeMin + "<br><br>" + "Norme max : " + response.normeMax
-			+ "<br><br>" + "Nombres de rows : " + response.nbRows);
-			var tableau = JSON.parse(response.dataJson);
-			dataJson = tableau;
-			
-			console.log(dataJson);
-			
-			var chart = new CanvasJS.Chart("chartContainer", {
-			animationEnabled: true,
-			theme: "light2",
-			title:{
-				text: "Simple Line Chart"
-			},
-			axisY:{
-				includeZero: false
-			},
-			data: [{        
-				type: "line",       
-				dataPoints: dataJson
-			}]
-		});
-		chart.render();
-
+			console.log(response);
+			search();
 		}
     });
 	
@@ -80,3 +56,47 @@ function remove_loader(data)
 	document.getElementById('sub').removeAttribute("disabled");
 	document.getElementById('loader').innerHTML = data;
 }
+function getLineChart()
+{
+	var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
+	var age_min = document.getElementById("age_min").value;
+	var age_max = document.getElementById("age_max").value;
+	var ville = document.getElementById("ville").innerHTML;
+	var sexe = document.getElementById("h").checked ? 1 : (document.getElementById("f").checked ? 2 : null);
+	$.ajax({
+      type: 'POST',
+      url: 'ajax_donnees.php',
+	  data:{
+		  ville:ville,
+		  type:type,
+		  age_min:age_min,
+		  age_max:age_max,
+		  sexe:sexe
+	  },
+	  dataType : 'json',
+	  success: function(response){
+			$/*("#resultatsPHP").html("Json obtenu : " + response.dataJson + "<br><br>" 
+			+ "Norme min : " + response.normeMin + "<br><br>" + "Norme max : " + response.normeMax
+			+ "<br><br>" + "Nombres de rows : " + response.nbRows);*/
+			var dataJson = JSON.parse(response.dataJson);
+			console.log(dataJson);
+			var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			theme: "light2",
+			title:{
+				text: "Simple Line Chart"
+			},
+			axisY:{
+				includeZero: false
+			},
+			data: [{        
+				type: "line",       
+				dataPoints: dataJson
+			}]
+		});
+		chart.render();
+		draw_d3_chart();
+		}
+    });
+}
+
