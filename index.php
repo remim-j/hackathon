@@ -103,7 +103,7 @@
 						<div style="margin-top:10px;"><label style="font-weight: bold;">Ville selectionnée :&nbsp;</label><label id="ville" style="font-weight: normal;"></label></div>
 						
 						<div style="margin-top:10px;">
-							<select id="analyse_type" style="max-width: 150px;" onchange="getLineChart()">
+							<select id="analyse_type" style="max-width: 150px;" onchange="search()">
 							<option value= "default">Type d'analyse</option>
 							<?php
 							$db = mysqli_connect('localhost','root','','analyse')
@@ -116,8 +116,8 @@
 							<?php }?></select>
 						</div>
 						
-						<div style="margin-top:10px;"><input type="checkbox" id="h" onchange="getLineChart()"/> Homme</div>
-						<div style="margin-top:10px;"><input type="checkbox" id="f" onchange="getLineChart()"/> Femme</div>
+						<div style="margin-top:10px;"><input type="checkbox" id="h"/> Homme</div>
+						<div style="margin-top:10px;"><input type="checkbox" id="f"/> Femme</div>
 						
 						<div style="margin-top:10px;">
 						<label for="amount" style="font-weight: bold;">Tranche d'âge :</label>
@@ -129,6 +129,7 @@
 						</div>
 						
 						<div style="margin-top:20px;"><button type="button" class="btn btn-primary" id="result">Filtrer</button></div>
+							<div id="loader_filter"></div>
 						
 					</div>
 					
@@ -143,7 +144,7 @@
 							<input type="file" name="file" id="file" required/>
 							<input id="sub" type="submit" value="Importer" class="submit"/>
 							</form>
-							<div id="loader"></div>
+							<div id="loader_import"></div>
 						</div>
 					</div>
 				</div>

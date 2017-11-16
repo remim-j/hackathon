@@ -7,8 +7,8 @@ $ageMax = $_POST['age_max'];
 $sexe = $_POST['sexe'];
 $analyse = $_POST['type'];
 
-if(!isset($_POST['group']))
-{
+//if(!isset($_POST['group']))
+//{
 	$ville = $_POST['ville'];
 	$reponse = mysqli_query($db, "SELECT id_type FROM type_an WHERE type = '$analyse'");
 	$analyseId = mysqli_fetch_assoc($reponse)['id_type'];
@@ -69,9 +69,9 @@ if(!isset($_POST['group']))
 	/* } */
 
 	$reponse->close(); /*Termine le traitement de la requ�te*/
-}
-else
-{
+//}
+//else
+//{
 	$chemin = 'fichier.csv';
 	$delimiteur = ',';
 
@@ -127,7 +127,5 @@ else
 		$cpt+=1;
 	}
 	fclose($fichier_csv);
-	print_r( array('norme_min'=>$norme_min,'norme_max'=>$norme_max));
-	//echo json_encode(array($tab,$norme_min,$norme_max));
-}
+//}
 ?>
