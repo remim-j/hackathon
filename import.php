@@ -90,10 +90,7 @@ while ($data = fgetcsv($handle,1000,";"))
     $valeur = $data[7] * pow(10,$data[8]);
     $unite = (sizeof(explode(' ', $data[5])) > 1 ? addslashes(explode(' ', $data[5])[sizeof(explode(' ', $data[5]))-1]) : NULL);
     $date = $datetime1->format("Y-m-d");
-    if(!$stmt_insert_analyse->execute())
-	{
-        echo $mysqli->error;
-	}
+    !$stmt_insert_analyse->execute();
   }
 }
 $d2 = date_create('now');

@@ -34,6 +34,7 @@ $(document).ready(function(){
 		$.ajax({
 			url: "import.php",
 			type: "POST",
+			async: false,
 			data: new FormData(this),
 			contentType: false,
 			cache: false, 
