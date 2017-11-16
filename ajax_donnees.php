@@ -7,8 +7,8 @@ $ageMax = $_POST['age_max'];
 $sexe = $_POST['sexe'];
 $analyse = $_POST['type'];
 
-//if(!isset($_POST['group']))
-//{
+if(!isset($_POST['update_select']))
+{
 	$ville = $_POST['ville'];
 	$reponse = mysqli_query($db, "SELECT id_type,norme_min,norme_max FROM type_an WHERE type = '$analyse'");
 	$row = mysqli_fetch_assoc($reponse);
@@ -72,12 +72,21 @@ $analyse = $_POST['type'];
 	/* } */
 
 	$reponse->close(); /*Termine le traitement de la requ�te*/
-//}
-//else
-//{
+	echo json_encode($response);
+
+}
+else
+{
 	$chemin = 'fichier.csv';
 	$delimiteur = ',';
 
+	$reponse = mysqli_query($db, "SELECT id_type,norme_min,norme_max FROM type_an WHERE type = '$analyse'");
+	$row = mysqli_fetch_assoc($reponse);
+	$analyseId = $row['id_type'];
+	$norme_min = $row['norme_min'];
+	$norme_max = $row['norme_max'];
+	$reponse->close();
+	
 	$query = "select commune,COUNT(*),cartodb_id,echelle from analyse, personne,ville_to_commune,commune_to_canton where ref_personne = id_personne and ville = nom and commune = communes";
 	$queryPlus="";
 	if(!empty($ageMin)){
@@ -127,6 +136,6 @@ $analyse = $_POST['type'];
 		$cpt+=1;
 	}
 	fclose($fichier_csv);
-	echo json_encode($response);
+}
 //}
 ?>
