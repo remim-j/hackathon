@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<style> /* set the CSS */
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+</style>
 	<head>
 
 		<!-- Encodage -->
@@ -11,6 +19,7 @@
 
 		<!-- Librairie D3.js -->
         <script src="https://d3js.org/d3.v4.js"></script>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
 
 		<!-- Feuille de style -->
 		<link rel="stylesheet" type="text/css" href="style.css">
@@ -77,7 +86,7 @@
 						<div style='margin-down: 10px;'>Define your filters :</div>
 						<label>Ville selectionnée :</label>
 						<label id="ville"></label>
-						<select id="analyse_type">
+						<select id="analyse_type" onchange="getLineChart()">
 						<option value= "default">Chosir un type d'analyse...</option>
 <?php
 $db = mysqli_connect('localhost','root','','analyse')
@@ -105,6 +114,7 @@ while ($data = $reponse->fetch_assoc())
 				<div id="map"></div>
 				
 				<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+				<svg class="chart"></svg>
 			</div>
 		</p>
 
@@ -118,5 +128,6 @@ while ($data = $reponse->fetch_assoc())
 
 	</body>
 		<script type="text/javascript" src="js/carte.js"></script>
+			<script type="text/javascript" src="js/chart_d3.js"></script>
 			<script type="text/javascript" src="js/controle.js"></script>
 </html>
