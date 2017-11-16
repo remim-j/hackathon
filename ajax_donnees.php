@@ -10,8 +10,12 @@ $analyse = $_POST['type'];
 //if(!isset($_POST['group']))
 //{
 	$ville = $_POST['ville'];
-	$reponse = mysqli_query($db, "SELECT id_type FROM type_an WHERE type = '$analyse'");
-	$analyseId = mysqli_fetch_assoc($reponse)['id_type'];
+	$reponse = mysqli_query($db, "SELECT id_type,norme_min,norme_max FROM type_an WHERE type = '$analyse'");
+	$row = mysqli_fetch_assoc($reponse);
+	$analyseId = $row['id_type'];
+	$norme_min = $row['norme_min'];
+	$norme_max = $row['norme_max'];
+	$reponse->close();
 	
 	$query = "select valeur,date from analyse, personne,ville_to_commune where ville = nom and ref_personne = id_personne";
 	if(!empty($ville)){
@@ -57,14 +61,13 @@ $analyse = $_POST['type'];
 
 	/*Les lignes ci-dessous sont pertinentes si count($reponse) > 10, environ */
 	
-	$norme_min = $rows[intval((2.5/100)*sizeOf($rows))];// Retourne la valeur � 2.5%
-	$norme_max = $rows[intval((97.5/100)*sizeOf($rows))];// Retourne la valuer � 97.5%
+	$norme_min_calc = $rows[intval((2.5/100)*sizeOf($rows))];// Retourne la valeur � 2.5%
+	$norme_max_calc = $rows[intval((97.5/100)*sizeOf($rows))];// Retourne la valuer � 97.5%
 	/* if (count($rows) >= 10){ Si on a suffisamment de r�sultats sur la ville */
 
 	$sizeRows = sizeOf($rows);
 	$rowsJson = json_encode($rows2);
-	$response = array('dataJson' => $rowsJson, 'normeMin' => $norme_min, 'normeMax' => $norme_max, 'nbRows' => $sizeRows);
-	echo json_encode($response);
+	$response = array('dataJson' => $rowsJson, 'normeMin_calc' => $norme_min_calc, 'normeMax_calc' => $norme_max_calc,'normeMin' => $norme_min, 'normeMax' => $norme_max, 'nbRows' => $sizeRows);
 
 	/* } */
 
@@ -75,11 +78,6 @@ $analyse = $_POST['type'];
 	$chemin = 'fichier.csv';
 	$delimiteur = ',';
 
-	$reponse = mysqli_query($db, "SELECT id_type,norme_min,norme_max FROM type_an WHERE type = '$analyse'");
-	$row = mysqli_fetch_assoc($reponse);
-	$analyseId = $row['id_type'];
-	$norme_min = $row['norme_min'];
-	$norme_max = $row['norme_max'];
 	$query = "select commune,COUNT(*),cartodb_id,echelle from analyse, personne,ville_to_commune,commune_to_canton where ref_personne = id_personne and ville = nom and commune = communes";
 	$queryPlus="";
 	if(!empty($ageMin)){
@@ -111,14 +109,16 @@ $analyse = $_POST['type'];
 		{
 			$values[] = $row2[0];
 		}
+		$reponse->close();
 		sort($values);
 		$norme_min_calc = $values[intval((2.5/100)*sizeOf($values))];// Retourne la valeur � 2.5%
 		$norme_max_calc = $values[intval((97.5/100)*sizeOf($values))];// Retourne la valuer � 97.5%
 		$tab[$row[0]] = ['count' => $row[1], 'norme_min_calc' => $norme_min_calc, 'norme_max_calc' => $norme_max_calc,'id'=> $row[2],'echelle'=>$row[3]];
 	}
+	$reponseCom->close();
 	$fichier_csv = fopen($chemin, 'w+');
 	$cpt=1;
-	$header = array('id','Communes','Count','Norme_max_calc','Norme_min_calc','Norme_max','Norme_min','Cartodb_id','Echelle');
+	$header = array('id','Communes','Count','Norme_max_calc','Norme_min_calc','Norme_min','Norme_max','Cartodb_id','Echelle');
 	fputcsv($fichier_csv, $header, $delimiteur);
 	foreach($tab as $line)
 	{
@@ -127,5 +127,6 @@ $analyse = $_POST['type'];
 		$cpt+=1;
 	}
 	fclose($fichier_csv);
+	echo json_encode($response);
 //}
 ?>

@@ -152,7 +152,6 @@
 				<div id="map" style="border:1px solid black;"></div>
 				
 				<div id="colD" style="margin-left:15px;">
-					<div><label><h3 style="font-weight: bold;">Résultat</h3></label></div>
 					<div id="chartContainer" style="height: 370px; width: 100%;"></div>
 					<div id="resultatsPHP" style="margin-top:10px;"></div>
 					

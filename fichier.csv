@@ -1,4 +1,4 @@
-id,Communes,Count,Norme_max_calc,Norme_min_calc,Norme_max,Norme_min,Cartodb_id,Echelle
+id,Communes,Count,Norme_max_calc,Norme_min_calc,Norme_min,Norme_max,Cartodb_id,Echelle
 1,Beaufort,2,-6.9,-18.4,-20.000,20.000,52,4
 2,Beckerich,10,4.5,-1.4,-20.000,20.000,95,4
 3,Bertrange,14,3.5,-6.1,-20.000,20.000,35,7

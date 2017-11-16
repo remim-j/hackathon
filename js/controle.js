@@ -22,7 +22,7 @@ $(document).ready(function(){
 		  dataType : 'json',
 		  success: function(response){
 			  console.log(response);
-				$("#resultatsPHP").html("Norme min : " + response.normeMin + "<br>" + "Norme max : " + response.normeMax
+				$("#resultatsPHP").html("Norme min calculée: " + response.normeMin_calc + "&nbspNorme min : " + response.normeMin + "<br>" + "Norme max calculée: " + response.normeMax_calc + "&nbspNorme max : " + response.normeMax
 				+ "<br>" + "Nombre d'analyses : " + response.nbRows);
 				var dataJson = JSON.parse(response.dataJson);
 				console.log(dataJson);
@@ -30,7 +30,7 @@ $(document).ready(function(){
 				animationEnabled: true,
 				theme: "light2",
 				title:{
-					text: "Simple Line Chart"
+					text: "Répartition des résultats d'analyse"
 				},
 				axisY:{
 					includeZero: false
