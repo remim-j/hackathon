@@ -47,11 +47,12 @@ if(!isset($_POST['group']))
 	{
 		fputcsv($fichier_csv, array($row['date'],$row['valeur']), $delimiteur);
 		
-		array_push($rows, implode($row));
+		$rows[] = $row['valeur'];
 		$rowsTemp = array_fill_keys($keys, intval($row['valeur']));
 		array_push($rows2, $rowsTemp);
 	}
 	fclose($fichier_csv);
+	sort($rows);
 	sort($rows2); /* Trie r�ponse */
 
 	/*Les lignes ci-dessous sont pertinentes si count($reponse) > 10, environ */
@@ -117,11 +118,11 @@ else
 	}
 	$fichier_csv = fopen($chemin, 'w+');
 	$cpt=1;
-	$header = array('id','Communes','Count','norme_max_calc','norme_min_calc','Cartodb_id','Echelle');
+	$header = array('id','Communes','Count','Norme_max_calc','Norme_min_calc','Norme_max','Norme_min','Cartodb_id','Echelle');
 	fputcsv($fichier_csv, $header, $delimiteur);
 	foreach($tab as $line)
 	{
-		$ligne = array($cpt,array_search($line,$tab),$line['count'],$line['norme_min_calc'],$line['norme_max_calc'],$line['id'],$line['echelle']);
+		$ligne = array($cpt,array_search($line,$tab),$line['count'],$line['norme_max_calc'],$line['norme_min_calc'],$norme_min,$norme_max,$line['id'],$line['echelle']);
 		fputcsv($fichier_csv, $ligne, $delimiteur);
 		$cpt+=1;
 	}

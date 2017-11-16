@@ -2,8 +2,8 @@ $(document).ready(function(){
     $('#result').click(function(e){
 	e.preventDefault();
 	var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
-	var age_min = document.getElementById("age_min").value;
-	var age_max = document.getElementById("age_max").value;
+	var age_min = $("#slider-range" ).slider( "values", 0);
+	var age_max = $("#slider-range" ).slider( "values", 1);
 	if(age_min !== "" && age_max !== "" && parseFloat(age_max) <= parseFloat(age_min))
 	{
 		document.getElementById("test_age").innerHTML = "Erreur age";
@@ -34,7 +34,6 @@ $(document).ready(function(){
 		$.ajax({
 			url: "import.php",
 			type: "POST",
-			async: false,
 			data: new FormData(this),
 			contentType: false,
 			cache: false, 
@@ -60,8 +59,8 @@ function remove_loader(data)
 function getLineChart()
 {
 	var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
-	var age_min = document.getElementById("age_min").value;
-	var age_max = document.getElementById("age_max").value;
+	var age_min = $("#slider-range" ).slider( "values", 0);
+	var age_max = $("#slider-range" ).slider( "values", 1);
 	var ville = document.getElementById("ville").innerHTML;
 	var sexe = document.getElementById("h").checked ? 1 : (document.getElementById("f").checked ? 2 : null);
 	$.ajax({
@@ -76,9 +75,9 @@ function getLineChart()
 	  },
 	  dataType : 'json',
 	  success: function(response){
-			$/*("#resultatsPHP").html("Json obtenu : " + response.dataJson + "<br><br>" 
-			+ "Norme min : " + response.normeMin + "<br><br>" + "Norme max : " + response.normeMax
-			+ "<br><br>" + "Nombres de rows : " + response.nbRows);*/
+		  console.log(response);
+			$("#resultatsPHP").html("Norme min : " + response.normeMin + "<br>" + "Norme max : " + response.normeMax
+			+ "<br>" + "Nombre d'analyses : " + response.nbRows);
 			var dataJson = JSON.parse(response.dataJson);
 			console.log(dataJson);
 			var chart = new CanvasJS.Chart("chartContainer", {
