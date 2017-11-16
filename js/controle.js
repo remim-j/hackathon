@@ -2,8 +2,8 @@ $(document).ready(function(){
     $('#result').click(function(e){
 	e.preventDefault();
 	var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
-	var age_min = document.getElementById("age_min").value;
-	var age_max = document.getElementById("age_max").value;
+	var age_min = $("#slider-range" ).slider( "values", 0);
+	var age_max = $("#slider-range" ).slider( "values", 1);
 	if(age_min !== "" && age_max !== "" && parseFloat(age_max) <= parseFloat(age_min))
 	{
 		document.getElementById("test_age").innerHTML = "Erreur age";

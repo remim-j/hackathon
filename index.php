@@ -1,12 +1,4 @@
 <!DOCTYPE html>
-<style> /* set the CSS */
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
-}
-</style>
 	<head>
 
 		<!-- Encodage -->
@@ -15,7 +7,14 @@
 		<!-- jQuery -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="/resources/demos/style.css">
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		
 		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
 
 		<!-- Librairie D3.js -->
         <script src="https://d3js.org/d3.v4.js"></script>
@@ -27,6 +26,8 @@
 		<!-- Bootstrap -->
 		<link data-require="bootstrap-css@3.0.0-rc2" data-semver="3.0.0-rc2" rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css" />
 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.js"></script>
+		
 		<!-- AngularJS -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
@@ -41,17 +42,32 @@
 
 		<!-- Titre -->
 		<title>Hackaton Big Data</title>
+		
+		<style>
+
+		.line {
+		  fill: none;
+		  stroke: steelblue;
+		  stroke-width: 2px;
+		}
+		</style>
 	</head>
 
 	<body ng-app="app">
+	
+			<div id="headers" style="margin-top:10px;">
+	
+				<h3 class="title">Laboratoire Luxembourgeois d'analyses médicales Ketterthill - LLAM S.A.</h1>
+				<h3 class="title">Outil de calcul de la norme des analyses numériques</h2>
+				
+			</div>
 
-		<h1>Laboratoire Luxembourgeois d'analyses médicales Ketterthill - LLAM S.A.</h1>
-		<h2>Outil de calcul de la norme des analyses numériques</h2>
-
+		
+		
 		<div class="col-lg-10">
 			<form>
 				<fieldset>
-					<div style='margin-left: 340px; margin-bottom: 10px; margin-top: 30px;'>
+					<div style='margin-left: 380px; margin-bottom: 10px; margin-top: 40px;'>
 						<label for="male">Jeu de couleurs</label>
 						<select>
 							<option value="YlGn">Jaune-Vert</option>
@@ -79,55 +95,72 @@
 		</div>
 
 		<p>
-						<div id="boards">
+			<div id="boards">
 
-				<div ng-controller="MainCtrl" style='flex: 0 0 270px;'>
-					<div class="container form-group col-md-7">
-						<div style='margin-down: 10px;'>Define your filters :</div>
-						<label>Ville selectionnée :</label>
-						<label id="ville"></label>
-						<select id="analyse_type" onchange="getLineChart()">
-						<option value= "default">Chosir un type d'analyse...</option>
-<?php
-$db = mysqli_connect('localhost','root','','analyse')
-		or die('Error connecting to MySQL server.');
-		$reponse = mysqli_query($db, "SELECT DISTINCT type FROM type_an ORDER BY type");
-while ($data = $reponse->fetch_assoc())
-{
-  ?>
-  <option value="<?php echo $data['type']; ?>"><?php echo $data['type']; ?></option>
-<?php }?></select>
-						<input type="checkbox" id="h"/> Homme
-						<input type="checkbox" id="f"/> Femme
-						<input ng-model="age_min" id="age_min" class="age" type="text" placeholder="Age Min"/>
-						<input ng-model="age_max" id="age_max" class="age" type="text" placeholder="Age Max"/>
-						<label id="test_age"></label>
-						<h1>Import</h1>
-						<form id="uploadAndImport" method="post" enctype="multipart/form-data">
-						<input type="file" name="file" id="file" required />
-						<input id="sub" type="submit" value="Importer" class="submit" />
-						</form>
-					<div id="loader"></div>
+				<div id="colG">
+					<div id="colG">
+						<div><h2>Choix des filtres</h2></div>
+						<div style="margin-top:10px;"><label style="font-weight: bold;">Ville selectionnée :&nbsp;</label><label id="ville" style="font-weight: normal;"></label></div>
+						
+						<div style="margin-top:10px;">
+							<select id="analyse_type" style="max-width: 150px;">
+							<option value= "default">Type d'analyse</option>
+							<?php
+							$db = mysqli_connect('localhost','root','','analyse')
+									or die('Error connecting to MySQL server.');
+									$reponse = mysqli_query($db, "SELECT DISTINCT type FROM type_an ORDER BY type");
+							while ($data = $reponse->fetch_assoc())
+							{
+							  ?>
+							  <option value="<?php echo $data['type']; ?>"><?php echo $data['type']; ?></option>
+							<?php }?></select>
+						</div>
+						
+						<div style="margin-top:10px;"><input type="checkbox" id="h"/> Homme</div>
+						<div style="margin-top:10px;"><input type="checkbox" id="f"/> Femme</div>
+						
+						<div style="margin-top:10px;">
+						<label for="amount" style="font-weight: bold;">Tranche d'âge :</label>
+						<input type="text" id="amount" readonly style="border:0; color:#f6931f;">
+						</div>
+
+						<div style="margin-top:10px;">
+						<div id="slider-range" style="max-width: 150px;"></div>
+						</div>
+						
+						<div style="margin-top:20px;"><button type="button" class="btn btn-primary" id="result">Filtrer</button></div>
+						
+					</div>
+					
+					<div id="colG">
+					
+						<div style="margin-top:30px;"><h2>Base de données</h2></div>
+						
+						<div style="margin-top:20px;"><button type="button" class="btn btn-danger" onclick="showHideImport()">Importation</button></div>
+						
+						<div id="importDIV" style="display:none;">
+							<form id="uploadAndImport" method="post" enctype="multipart/form-data">
+							<input type="file" name="file" id="file" required/>
+							<input id="sub" type="submit" value="Importer" class="submit"/>
+							</form>
+							<div id="loader"></div>
+						</div>
 					</div>
 				</div>
 
-				<div id="map"></div>
+				<div id="map" style="border:1px solid black;"></div>
 				
-				<div id="chartContainer" style="height: 370px; width: 100%;"></div>
-				<svg class="chart"></svg>
+				<div id="colD" style="margin-left:15px;">
+					<div><label><h3 style="font-weight: bold;">Résultat</h3></label></div>
+					<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+					<div id="resultatsPHP" style="margin-top:10px;"></div>
+					<svg class="chart"></svg>
+				</div>
 			</div>
-		</p>
-
-		<p>Affichage résultats php
-
-		<button type="button" id="result">Click Me</button>
-
-		<div id="resultatsPHP"></div>
-
 		</p>
 
 	</body>
 		<script type="text/javascript" src="js/carte.js"></script>
-			<script type="text/javascript" src="js/chart_d3.js"></script>
+		<script type="text/javascript" src="js/chart_d3.js"></script>
 			<script type="text/javascript" src="js/controle.js"></script>
 </html>

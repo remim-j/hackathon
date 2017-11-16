@@ -117,7 +117,7 @@ else
 	}
 	$fichier_csv = fopen($chemin, 'w+');
 	$cpt=1;
-	$header = array('id','Communes','Count','norme_max_calc','norme_min_calc','Cartodb_id','Echelle');
+	$header = array('id','Communes','Count','Norme_max_calc','Norme_min_calc','Cartodb_id','Echelle');
 	fputcsv($fichier_csv, $header, $delimiteur);
 	foreach($tab as $line)
 	{

@@ -1,3 +1,25 @@
+				$( function() {
+				$( "#slider-range" ).slider({
+					range: true,
+					min: 0,
+					max: 150,
+					values: [ 50, 75 ],
+					slide: function(event, ui) {
+						$( "#amount" ).val(ui.values[0] + " - " + ui.values[1]);
+					}
+				});
+				$( "#amount" ).val($( "#slider-range" ).slider( "values", 0 ) +
+					" - " + $( "#slider-range" ).slider( "values", 1 ) );
+			} );
+			
+			function showHideImport() {
+				var x = document.getElementById("importDIV");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+				} else {
+					x.style.display = "none";
+				}
+			}
 
 			var width = 430, height = 550;
 
@@ -29,7 +51,7 @@
 					.attr('id', function(d) {return "d" + d.properties.cartodb_id;})
 					.attr("d", path);
 
-				d3.csv("populationLux.csv", function(csv) {
+				d3.csv("fichier.csv", function(csv) {
 					// Quantile scales map an input domain to a discrete range, 0...max(population) to 1...9
 					var quantile = d3.scaleQuantile()
 						.domain([0, d3.max(csv, function(e) { return +e.Echelle; })])
@@ -64,8 +86,8 @@
 									.duration(200)
 									.style("opacity", .9);
 								div.html("<b>Commune : </b>" + e.Communes + "<br>"
-										+ "<b>Canton : </b>" + e.Cantons + "<br>"
-										+ "<b>Population : </b>" + e.Population + "<br>")
+										+ "<b>Norme max calc : </b>" + e.Norme_max_calc + "<br>"
+										+ "<b>Norme min calc : </b>" + e.Norme_min_calc)
 									.style("left", (d3.event.pageX + 30) + "px")
 									.style("top", (d3.event.pageY - 30) + "px");
 							})
