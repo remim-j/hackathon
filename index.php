@@ -3,6 +3,7 @@
 
 		<!-- Encodage -->
 		<meta charset="UTF-8">
+		<meta http-equiv="pragma" content="no-cache" />
 
 		<!-- jQuery -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -104,7 +105,6 @@
 						
 						<div style="margin-top:10px;">
 							<select id="analyse_type" style="max-width: 150px;" onchange="search()">
-							<option value= "default">Type d'analyse</option>
 							<?php
 							$db = mysqli_connect('localhost','root','','analyse')
 									or die('Error connecting to MySQL server.');

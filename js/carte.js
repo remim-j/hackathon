@@ -54,7 +54,9 @@
 				d3.csv("fichier.csv", function(csv) {
 					// Quantile scales map an input domain to a discrete range, 0...max(population) to 1...9
 					var quantile = d3.scaleQuantile()
-						.domain([0, d3.max(csv, function(e) { return +e.Echelle; })])
+						.domain([d3.min(csv, function(e) { return (((Math.abs(e.Norme_max_calc-e.Norme_max)) + (Math.abs(e.Norme_min_calc-e.Norme_min)))/2);
+															}), d3.max(csv, function(e) { return (((Math.abs(e.Norme_max_calc-e.Norme_max)) + (Math.abs(e.Norme_min_calc-e.Norme_min)))/2);
+															})])
 						.range(d3.range(9));
 
 					var legend = svg.append('g')
@@ -71,7 +73,9 @@
 						.attr("class", function(d) { return "q" + d + "-9"; });
 
 					var legendScale = d3.scaleLinear()
-						.domain([0, d3.max(csv, function(e) { return +e.Echelle; })])
+						.domain([d3.min(csv, function(e) { return (((Math.abs(e.Norme_max_calc-e.Norme_max)) + (Math.abs(e.Norme_min_calc-e.Norme_min)))/2);
+															}), d3.max(csv, function(e) { return (((Math.abs(e.Norme_max_calc-e.Norme_max)) + (Math.abs(e.Norme_min_calc-e.Norme_min)))/2);
+															})])
 						.range([0, 9 * 20]);
 
 					var legendAxis = svg.append("g")
@@ -80,14 +84,14 @@
 
 					csv.forEach(function(e,i) {
 						d3.select("#d" + e.Cartodb_id)
-							.attr("class", function(d) { return "department q" + quantile(+e.Echelle) + "-9"; })
+							.attr("class", function(d) { return "department q" + quantile(((Math.abs(e.Norme_max_calc-e.Norme_max)) + (Math.abs(e.Norme_min_calc-e.Norme_min)))/2) + "-9"; })
 							.on("mouseover", function(d) {
 								div.transition()
 									.duration(200)
 									.style("opacity", .9);
 								div.html("<b>Commune : </b>" + e.Communes + "<br>"
-										+ "<b>Norme max calc : </b>" + e.Norme_max_calc + "<br>"
-										+ "<b>Norme min calc : </b>" + e.Norme_min_calc)
+										+ "<b>Norme max calc : </b>" + e.Norme_max_calc + " ; " + "<b>Norme max : </b>" + e.Norme_max + "<br>"
+										+ "<b>Norme min calc : </b>" + e.Norme_min_calc + " ; " + "<b>Norme min : </b>" + e.Norme_min)
 									.style("left", (d3.event.pageX + 30) + "px")
 									.style("top", (d3.event.pageY - 30) + "px");
 							})
@@ -170,12 +174,11 @@
 					.attr("font-size", "11px")
 					.attr("fill", "white");
 			}
+			
 function search_carte(){
-        d3.selectAll("path")
-            .attr("d", path)
-            .attr("opacity",function(d){
-	                return Math.random(); 
-                });
+	
+		 d3.selectAll("path")
+            .attr("d", path);
 }
 			var app = angular.module("app", ['ngMaterial']);
 

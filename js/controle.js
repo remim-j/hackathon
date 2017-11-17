@@ -64,34 +64,37 @@ function update(up){
 		  data:up?donnees1:donnees2,
 		  dataType : 'json',
 		  success: function(response){
-			  if(up){
-			  console.log(response);
-				$("#resultatsPHP").html("Norme min calculée: " + response.normeMin_calc + "&nbspNorme min : " + response.normeMin + "<br>" + "Norme max calculée: " + response.normeMax_calc + "&nbspNorme max : " + response.normeMax
-				+ "<br>" + "Nombre d'analyses : " + response.nbRows);
-				var dataJson = JSON.parse(response.dataJson);
-				console.log(dataJson);
-				var chart = new CanvasJS.Chart("chartContainer", {
-				animationEnabled: true,
-				theme: "light2",
-				title:{
-					text: "Répartition des résultats d'analyse"
-				},
-				axisY:{
-					includeZero: false
-				},
-				data: [{        
-					type: "line",       
-					dataPoints: dataJson
-				}]
-			});
-			chart.render();
-			draw_d3_chart();
-			document.getElementById('result').value = "Importer";
-			document.getElementById('result').removeAttribute("disabled");
-			  remove_loader('loader_filter');}
-			  else
-				  search_carte();
+			if(up){
+				  console.log(response);
+					$("#resultatsPHP").html("Norme min calculée: " + response.normeMin_calc + "&nbspNorme min : " + response.normeMin + "<br>" + "Norme max calculée: " + response.normeMax_calc + "&nbspNorme max : " + response.normeMax
+					+ "<br>" + "Nombre d'analyses : " + response.nbRows);
+					var dataJson = JSON.parse(response.dataJson);
+					console.log(dataJson);
+					var chart = new CanvasJS.Chart("chartContainer", {
+					animationEnabled: true,
+					theme: "light2",
+					title:{
+						text: "Répartition des résultats d'analyse"
+					},
+					axisY:{
+						includeZero: false
+					},
+					data: [{        
+						type: "line",       
+						dataPoints: dataJson
+					}]
+				});
+				chart.render();
+				draw_d3_chart();
+				document.getElementById('result').value = "Importer";
+				document.getElementById('result').removeAttribute("disabled");
+				remove_loader('loader_filter');
 			}
+			  else {
+				  search_carte();
+				  window.location.href = window.location.href;
+			  }
+		  }
 		});
-}
+	}
 
