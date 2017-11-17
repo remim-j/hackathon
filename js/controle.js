@@ -3,7 +3,7 @@ $(document).ready(function(){
 		document.getElementById('result').value = "Filtre en cours...";
 		document.getElementById('result').setAttribute("disabled", "disabled");
 		display_loader('loader_filter');
-		update1(up);
+		update1();
   });
   $('#uploadAndImport').submit(function(e){
 		e.preventDefault();
@@ -33,12 +33,7 @@ function remove_loader(place)
 {
 	document.getElementById(place).innerHTML = "";
 }
-function search(){
-	console.log("Hello search");
-	update2();
-}
 function update1(){
-		console.log("Hello update1");
 	
 		var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
 		var age_min = $("#slider-range" ).slider( "values", 0);
@@ -86,9 +81,7 @@ function update1(){
 		});
 	}
 	
-	function update2(){
-		console.log("Hello update2");
-	
+	function search(){
 		var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
 		var age_min = $("#slider-range" ).slider( "values", 0);
 		var age_max = $("#slider-range" ).slider( "values", 1);
@@ -107,9 +100,7 @@ function update1(){
 			  update_select:"ok"
 		  },
 		  success: function(){
-				console.log("Hello else");
 				search_carte();
-				window.location.href = window.location.href;
 		  }
 		});
 	}
