@@ -50,40 +50,8 @@
 				
 			</div>
 
-		
-		
-		<div class="col-lg-10">
-			<form>
-				<fieldset>
-					<div style='margin-left: 380px; margin-bottom: 10px; margin-top: 40px;'>
-						<label for="male">Jeu de couleurs</label>
-						<select>
-							<option value="YlGn">Jaune-Vert</option>
-							<option value="YlGnBu">Jaune-Vert-Bleu</option>
-							<option value="GnBu">Vert-Bleu</option>
-							<option value="BuGn">Bleu-Vert</option>
-							<option value="PuBuGn">Violet-Bleu-Vert</option>
-							<option value="PuBu">Violet-Bleu</option>
-							<option value="BuPu">Bleu-Violet</option>
-							<option value="RdPu">Rouge-Violet</option>
-							<option value="PuRd">Violet-Rouge</option>
-							<option value="OrRd">Orange-Rouge</option>
-							<option value="YlOrRd" selected="selected">Jaune-Orange-Rouge</option>
-							<option value="YlOrBr">Jaune-Orange-Marron</option>
-							<option value="Purples">Violets</option>
-							<option value="Blues">Bleu</option>
-							<option value="Greens">Vert</option>
-							<option value="Oranges">Orange</option>
-							<option value="Reds">Rouge</option>
-							<option value="Greys">Gris</option>
-						</select>
-					</div>
-				</fieldset>
-			</form>
-		</div>
-
 		<p>
-			<div id="boards">
+			<div id="boards" style="margin-top:50px;">
 
 				<div id="colG">
 					<div id="colG">
@@ -136,17 +104,50 @@
 					</div>
 				</div>
 
+				<div id="colD">
+				
+				<div class="col-lg-10">
+					<form>
+						<fieldset>
+							<div style='margin-left: 60px; margin-bottom: 10px; margin-top: 40px;'>
+								<label for="male">Jeu de couleurs</label>
+								<select id="selection">
+									<option value="YlGn">Jaune-Vert</option>
+									<option value="YlGnBu">Jaune-Vert-Bleu</option>
+									<option value="GnBu">Vert-Bleu</option>
+									<option value="BuGn">Bleu-Vert</option>
+									<option value="PuBuGn">Violet-Bleu-Vert</option>
+									<option value="PuBu">Violet-Bleu</option>
+									<option value="BuPu">Bleu-Violet</option>
+									<option value="RdPu">Rouge-Violet</option>
+									<option value="PuRd">Violet-Rouge</option>
+									<option value="OrRd">Orange-Rouge</option>
+									<option value="YlOrRd" selected="selected">Jaune-Orange-Rouge</option>
+									<option value="YlOrBr">Jaune-Orange-Marron</option>
+									<option value="Purples">Violets</option>
+									<option value="Blues">Bleu</option>
+									<option value="Greens">Vert</option>
+									<option value="Oranges">Orange</option>
+									<option value="Reds">Rouge</option>
+									<option value="Greys">Gris</option>
+								</select>
+							</div>
+						</fieldset>
+					</form>
+				</div>
 				<div id="map" style="border:1px solid black;"></div>
+				
+				</div>
 				
 				<div id="colD" style="margin-left:15px;">
 					<div id="chartContainer" style="height: 370px; width: 100%;"></div>
 					<div id="resultatsPHP" style="margin-top:10px;"></div>
-					
+					<div id="chart"></div>
 				</div>
 			</div>
 		</p>
-		<div id="chart"></div>
 	</body>
+	
 		<script type="text/javascript" src="js/carte.js"></script>
 		<script type="text/javascript" src="js/chart_d3.js"></script>
 			<script type="text/javascript" src="js/controle.js"></script>

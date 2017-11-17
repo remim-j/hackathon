@@ -110,7 +110,7 @@
 				});
 			});
 
-			d3.select("select").on("change", function() {
+			d3.select("#selection").on("change", function() {
 				d3.selectAll("svg").attr("class", this.value);
 			});
 
