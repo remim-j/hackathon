@@ -114,7 +114,7 @@
 				d3.selectAll("svg").attr("class", this.value);
 			});
 
-			var div = d3.select("body").append("div")
+			var div = d3.select("#map").append("div")
 				.attr("class", "tooltip")
 				.style("opacity", 0);
 
@@ -177,10 +177,6 @@
 			
 function search_carte(){
 	
-		 d3.selectAll("path")
-            .attr("d", path);
+		console.log("Hello !!");
+		svg.selectAll("path").data("fichier.csv");
 }
-			var app = angular.module("app", ['ngMaterial']);
-
-			app.controller("MainCtrl", function($scope){
-			});

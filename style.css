@@ -55,6 +55,14 @@ div.tooltip {
 	flex-direction: column;
 }
 
+/*
+#map {
+	
+	width :  100%;
+	position:fixed;
+}
+*/
+
 .filtresHBD {
 	width :  100%;
     display : flex;

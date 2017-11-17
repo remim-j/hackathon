@@ -28,18 +28,6 @@
 		<link data-require="bootstrap-css@3.0.0-rc2" data-semver="3.0.0-rc2" rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css" />
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.js"></script>
-		
-		<!-- AngularJS -->
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-
-		<!-- Dates en français -->
-		<script src="angular-locale_fr-fr.js"></script>
-
-		<!-- Angular-material -->
-		<script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
 
 		<!-- Titre -->
 		<title>Hackaton Big Data</title>
@@ -54,7 +42,7 @@
 		</style>
 	</head>
 
-	<body ng-app="app">
+	<body>
 	
 			<div id="headers" style="margin-top:10px;">
 	
