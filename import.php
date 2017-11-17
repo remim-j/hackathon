@@ -13,9 +13,6 @@ if ($mysqli->connect_errno) {
   exit();
 }
 $d1 = date_create('now');
-$mysqli->query("DELETE FROM personne");
-$mysqli->query("DELETE FROM type_an");
-$mysqli->query("DELETE FROM analyse");
 
 $handle = fopen($targetPath,"r");
 fgetcsv($handle, 1000, ";");

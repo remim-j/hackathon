@@ -58,18 +58,6 @@
 						<div><h2>Choix des filtres</h2></div>
 						<div style="margin-top:10px;"><label style="font-weight: bold;">Ville selectionnée :&nbsp;</label><label id="ville" style="font-weight: normal;"></label></div>
 						
-						<div style="margin-top:10px;">
-							<select id="analyse_type" style="max-width: 150px;" onchange="search()">
-							<?php
-							$db = mysqli_connect('localhost','root','','analyse')
-									or die('Error connecting to MySQL server.');
-									$reponse = mysqli_query($db, "SELECT DISTINCT type FROM type_an ORDER BY type");
-							while ($data = $reponse->fetch_assoc())
-							{
-							  ?>
-							  <option value="<?php echo $data['type']; ?>"><?php echo $data['type']; ?></option>
-							<?php }?></select>
-						</div>
 						
 						<div style="margin-top:10px;"><input type="checkbox" id="h"/> Homme</div>
 						<div style="margin-top:10px;"><input type="checkbox" id="f"/> Femme</div>
@@ -83,6 +71,19 @@
 						<div id="slider-range" style="max-width: 150px;"></div>
 						</div>
 						
+						<div><h2>Choix de l'analyse</h2></div>
+						<div style="margin-top:10px;">
+							<select id="analyse_type" style="max-width: 150px;" onchange="search()">
+							<?php
+							$db = mysqli_connect('localhost','root','','analyse')
+									or die('Error connecting to MySQL server.');
+									$reponse = mysqli_query($db, "SELECT DISTINCT type FROM type_an ORDER BY type");
+							while ($data = $reponse->fetch_assoc())
+							{
+							  ?>
+							  <option value="<?php echo $data['type']; ?>"><?php echo $data['type']; ?></option>
+							<?php }?></select>
+						</div>
 						<div style="margin-top:20px;"><button type="button" class="btn btn-primary" id="result">Filtrer</button></div>
 							<div id="loader_filter"></div>
 						
@@ -90,14 +91,14 @@
 					
 					<div id="colG">
 					
-						<div style="margin-top:30px;"><h2>Base de données</h2></div>
+						<div style="margin-top:30px;"><h2>Importation</h2></div>
 						
-						<div style="margin-top:20px;"><button type="button" class="btn btn-danger" onclick="showHideImport()">Importation</button></div>
+						<!--<div style="margin-top:20px;"><button type="button" class="btn btn-danger" onclick="showHideImport()">Importation</button></div>-->
 						
-						<div id="importDIV" style="display:none;">
+						<div id="importDIV">
 							<form id="uploadAndImport" method="post" enctype="multipart/form-data">
-							<input type="file" name="file" id="file" required/>
-							<input id="sub" type="submit" value="Importer" class="submit"/>
+							<input type="file" name="file" id="file" required/><br>
+							<input id="sub" class="btn btn-danger" type="submit" value="Importer" class="submit"/>
 							</form>
 							<div id="loader_import"></div>
 						</div>

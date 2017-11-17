@@ -35,7 +35,7 @@ function remove_loader(place)
 }
 function update1(){
 	
-		var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
+		var type = document.getElementById("analyse_type").value;
 		var age_min = $("#slider-range" ).slider( "values", 0);
 		var age_max = $("#slider-range" ).slider( "values", 1);
 		var ville = document.getElementById("ville").innerHTML;
@@ -82,7 +82,7 @@ function update1(){
 	}
 	
 	function search(){
-		var type = document.getElementById("analyse_type").selectedIndex == 0 ? null : document.getElementById("analyse_type").value;
+		var type = document.getElementById("analyse_type").value;
 		var age_min = $("#slider-range" ).slider( "values", 0);
 		var age_max = $("#slider-range" ).slider( "values", 1);
 		var ville = document.getElementById("ville").innerHTML;
