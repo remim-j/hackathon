@@ -18,9 +18,17 @@ $(document).ready(function(){
 			cache: false, 
 			processData: false,
 			success: function(data) {
+				console.log(data);
 				document.getElementById('sub').value = "Importer";
 				document.getElementById('sub').removeAttribute("disabled");
 				remove_loader('loader_import');
+				location.href = 'index.php?success=1';
+			},
+			error: function(data) {
+				document.getElementById('sub').value = "Importer";
+				document.getElementById('sub').removeAttribute("disabled");
+				remove_loader('loader_import');
+				location.href = 'index.php?success=0';
 			}
 		});
 	});
@@ -58,11 +66,13 @@ function update1(){
 					+ "<br>" + "Nombre d'analyses : " + response.nbRows);
 					var dataJson = JSON.parse(response.dataJson);
 					console.log(dataJson);
+					document.getElementById('chart1_title').innerHTML = "Répartition croissante des résultats d'analyse";
+					document.getElementById('chart2_title').innerHTML = "Répartition des résultats d'analyse par date";
 					var chart = new CanvasJS.Chart("chartContainer", {
 					animationEnabled: true,
 					theme: "light2",
 					title:{
-						text: "Répartition des résultats d'analyse"
+						text: ""
 					},
 					axisY:{
 						includeZero: false
@@ -77,6 +87,12 @@ function update1(){
 				document.getElementById('result').value = "Importer";
 				document.getElementById('result').removeAttribute("disabled");
 				remove_loader('loader_filter');
+		  },
+		  error: function(){
+				document.getElementById('result').value = "Importer";
+				document.getElementById('result').removeAttribute("disabled");
+				remove_loader('loader_filter');
+				location.href = "index.php?filter=0";
 		  }
 		});
 	}

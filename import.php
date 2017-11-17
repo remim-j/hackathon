@@ -1,7 +1,12 @@
 <?php
 //Upload
 $sourcePath = $_FILES['file']['tmp_name'];
+	
 $targetPath = "upload/".$_FILES['file']['name'];
+if(pathinfo($targetPath, PATHINFO_EXTENSION) != "csv"){
+	header('HTTP/1.1 500 Internal Server Booboo');
+	die();
+}
 move_uploaded_file($sourcePath,$targetPath);
 
 //Store

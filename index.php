@@ -52,10 +52,9 @@
 
 		<p>
 			<div id="boards" style="margin-top:50px;">
-
 				<div id="colG">
 					<div id="colG">
-						<div><h2>Choix des filtres</h2></div>
+						<div><br><h2>Choix des filtres</h2></div>
 						<div style="margin-top:10px;"><label style="font-weight: bold;">Ville selectionnée :&nbsp;</label><label id="ville" style="font-weight: normal;"></label></div>
 						
 						
@@ -84,7 +83,8 @@
 							  <option value="<?php echo $data['type']; ?>"><?php echo $data['type']; ?></option>
 							<?php }?></select>
 						</div>
-						<div style="margin-top:20px;"><button type="button" class="btn btn-primary" id="result">Filtrer</button></div>
+						<div style="margin-top:20px;"><button type="button" class="btn btn-primary" id="result">Filtrer</button></div><br><br>
+							<label><?php if(isset($_GET['filter']) && $_GET['filter'] == 0) echo "Aucun résultat pour ces filtres";else echo "";?></label>
 							<div id="loader_filter"></div>
 						
 					</div>
@@ -98,7 +98,8 @@
 						<div id="importDIV">
 							<form id="uploadAndImport" method="post" enctype="multipart/form-data">
 							<input type="file" name="file" id="file" required/><br>
-							<input id="sub" class="btn btn-danger" type="submit" value="Importer" class="submit"/>
+							<input id="sub" class="btn btn-danger" type="submit" value="Importer" class="submit"/><br><br>
+							<label><?php if(isset($_GET['success'])){if($_GET['success'] == 1) echo "Importation réussie";else echo "Erreur lors de l'importation";}else echo ""?></label>
 							</form>
 							<div id="loader_import"></div>
 						</div>
@@ -107,10 +108,10 @@
 
 				<div id="colD">
 				
-				<div class="col-lg-10">
+				<div> 
 					<form>
 						<fieldset>
-							<div style='margin-left: 60px; margin-bottom: 10px; margin-top: 40px;'>
+							<div style='margin-left: 0px; margin-bottom: 10px; margin-top: 40px;'>
 								<label for="male">Jeu de couleurs</label>
 								<select id="selection">
 									<option value="YlGn">Jaune-Vert</option>
@@ -140,9 +141,14 @@
 				
 				</div>
 				
-				<div id="colD" style="margin-left:15px;">
+				<div id="colD" style="margin-left:0px;">
+					<label id="chart1_title"></label>
 					<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+					
+					<label><br></label>
 					<div id="resultatsPHP" style="margin-top:10px;"></div>
+					<label><br><br></label>
+					<label id="chart2_title"></label>
 					<div id="chart"></div>
 				</div>
 			</div>

@@ -36,7 +36,7 @@ if(!isset($_POST['update_select']))
 	$query.=" order by date";
 	// $personne = query('select valeur, age, sexe, ville from analyse, personne where id_analyse = '$id_analyse' and ref_personne = id_personne'); // On r�cup�re les informations sur la personne � partir des l'id de l'analyse
 	$reponse = mysqli_query($db, $query); /*On recupere toutes les valeurs e toutes les personnes qui correspondent aux donn�es demand�es. Il faut modifier la requ�te en fonction des donn�es manquantes.*/
-
+	$numrow = $reponse->num_rows;
 	$rows = array();
 	$keys = array('y');
 	$rows2 = array();
@@ -56,6 +56,11 @@ if(!isset($_POST['update_select']))
 		array_push($rows2, $rowsTemp);
 	}
 	fclose($fichier_csv);
+	if($numrow == 0)
+	{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		die();
+	}
 	sort($rows);
 	sort($rows2); /* Trie r�ponse */
 
